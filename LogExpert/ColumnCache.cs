@@ -4,35 +4,35 @@ using System.Text;
 
 namespace LogExpert
 {
-  internal class ColumnCache
-  {
-    private string[] cachedColumns = null;
-    private ILogLineColumnizer lastColumnizer;
-    private int lastLineNumber = -1;
-
-    internal ColumnCache()
+    internal class ColumnCache
     {
+        private string[] cached_columns = null;
+        private ILogLineColumnizer last_columnizer;
+        private int last_line = -1;
 
-    }
+        internal ColumnCache()
+        {
+        }
 
-    internal string[] GetColumnsForLine(LogfileReader logFileReader, int lineNumber, ILogLineColumnizer columnizer, LogExpert.LogWindow.ColumnizerCallback columnizerCallback)
-    {
-      if (this.lastColumnizer != columnizer || this.lastLineNumber != lineNumber && this.cachedColumns != null)
-      {
-        this.lastColumnizer = columnizer;
-        this.lastLineNumber = lineNumber;
-        string line = logFileReader.GetLogLineWithWait(lineNumber);
-        if (line != null)
+        internal string[] GetColumnsForLine(
+            LogfileReader logFileReader, int line,
+            ILogLineColumnizer columnizer,
+            LogExpert.LogWindow.ColumnizerCallback callback)
         {
-          columnizerCallback.LineNum = lineNumber;
-          this.cachedColumns = columnizer.SplitLine(columnizerCallback, line);
+            if (this.last_columnizer == columnizer && this.last_line == line &&
+                this.cached_columns != null)
+                return this.cached_columns;
+
+            string line_data = logFileReader.GetLogLineWithWait(line);
+            if (line_data != null)
+            {
+                callback.LineNum = line;
+                this.cached_columns = columnizer.SplitLine(callback, line_data);
+                this.last_columnizer = columnizer;
+                this.last_line = line;
+            }
+
+            return this.cached_columns;
         }
-        else
-        {
-          this.cachedColumns = null;
-        }
-      }
-      return this.cachedColumns;
     }
-  }
 }

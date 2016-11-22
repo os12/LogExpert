@@ -74,6 +74,7 @@ namespace LogExpert
       this.registeredColumnizers.Add(new DefaultLogfileColumnizer());
       this.registeredColumnizers.Add(new TimestampColumnizer());
       this.registeredColumnizers.Add(new ClfColumnizer());
+      this.registeredColumnizers.Add(new GLogColumnizer());
       this.RegisteredFileSystemPlugins.Add(new LocalFileSystem());
 
       string pluginDir = Application.StartupPath + Path.DirectorySeparatorChar + "plugins";

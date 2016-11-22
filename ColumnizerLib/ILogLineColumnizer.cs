@@ -44,7 +44,7 @@ namespace LogExpert
 
     /// <summary>
     /// Given a single line of the logfile this function splits the line content into columns. The function returns 
-    /// a string array containing the splitted content.
+    /// a string array containing the split content.
     /// </summary>
     /// <remarks>
     /// This function is called by LogExpert for every line that has to be drawn in the grid view. The faster your code
